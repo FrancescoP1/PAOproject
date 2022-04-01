@@ -2,9 +2,10 @@ package service;
 
 import address.Address;
 //import restaurant.Restaurant;
+import user.Admin;
 import user.Driver;
 import user.User;
-import user.normalUser;
+import user.NormalUser;
 
 //import java.lang.reflect.Array;
 import java.util.Scanner;
@@ -54,9 +55,11 @@ public class UserService {
         System.out.println("Your phone number: ");
         String phoneNumber = sc1.nextLine();
         if(type.equals("normalUser")) {
-            registeredUsers.add(new normalUser(name, address, phoneNumber, email, password));
+            registeredUsers.add(new NormalUser(name, address, phoneNumber, email, password));
         } else if (type.equals("driver")) {
             registeredUsers.add(new Driver(name, address, phoneNumber, email, password));
+        } else if (type.equals("admin")) {
+            registeredUsers.add(new Admin(name, address, phoneNumber,email, password));
         }
     }
 

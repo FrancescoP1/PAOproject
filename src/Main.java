@@ -35,7 +35,8 @@ public class Main {
         Address adr2 = new Address("Bucuresti", "Lalelor", 28);
         Address adr3 = new Address("Constanta", "Cazinoului", 7);
 
-        normalUser marcel = new normalUser("Marcel", adr1, "073", "marcel@yahoo.com", "123456");
+        //8 obiecte
+        NormalUser marcel = new NormalUser("Marcel", adr1, "073", "marcel@yahoo.com", "123456");
         Driver costel = new Driver("Costel", adr2, "078", "costel@yahoo.com", "123456");
         Admin fane = new Admin("Fane", adr3, "075", "fane@yahoo.com", "123456");
         Desert d1 = new Desert("Tiramisu", 4.5, 50, 100);
@@ -50,6 +51,7 @@ public class Main {
         menuArr.add(dr1);
         menuArr.add(fast1);
         menuArr.add(main1);
+
 
         Restaurant rest1 = new Restaurant("Kapo", adr3, "079", menuArr);
         Menu AppMenu = new Menu();

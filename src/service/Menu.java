@@ -6,9 +6,8 @@ import restaurant.Restaurant;
 import user.Admin;
 import user.Driver;
 import user.User;
-import user.normalUser;
+import user.NormalUser;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Menu {
@@ -74,7 +73,7 @@ public class Menu {
             driver();
         } else if(loggedUser instanceof Admin) {
             admin();
-        } else if(loggedUser instanceof normalUser) {
+        } else if(loggedUser instanceof NormalUser) {
             basicUser();
         }
     }
@@ -195,7 +194,7 @@ public class Menu {
     public static void showUserOrders(User user) {
         //sortare crescatoare dupa pretul total al unei comenzi
         Collections.sort(allOrders);
-        if(user instanceof normalUser) {
+        if(user instanceof NormalUser) {
             for(Order order : allOrders) {
                 if(order.getClientId() == user.getUserId()) {
                     order.showOrderInfo();
@@ -233,7 +232,8 @@ public class Menu {
         System.out.println("1. View all orders (press1, then enter)");
         System.out.println("2. View all user's information (press 2, then enter)");
         System.out.println("3. Create new Driver (press 3, then enter)");
-        System.out.println("4. Logout (press 4, then enter)");
+        System.out.println("4. Create new Admin (press 4, then enter");
+        System.out.println("5. Logout (press 4, then enter)");
         //-> more functionalities to be implemented, such as editing restaurant properties, etc.
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
@@ -243,6 +243,10 @@ public class Menu {
             showAllUsers();
         } else if(option == 3) {
             UserService.registerUser("driver");
+        } else if(option == 4) {
+            UserService.registerUser("admin");
+        } else if(option == 5) {
+            loggedUser = UserService.logOff();
         }
     }
 }
