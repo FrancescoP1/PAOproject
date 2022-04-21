@@ -116,8 +116,7 @@ public class Order implements Comparable<Order>{
             return 1;
         } else if(this.getTotalPrice() == o.getTotalPrice()) {
             return 0;
-        } else {
-            return -1;
         }
+            return -1;
     }
 }
