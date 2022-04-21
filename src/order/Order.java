@@ -7,11 +7,12 @@ import user.Driver;
 import user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order implements Comparable<Order>{
     private User client;
     private Restaurant restaurant;
-    private ArrayList<MenuItem> orderItems;
+    private List<MenuItem> orderItems;
     private double totalPrice;
     private String orderStatus;
     private Driver driver;
@@ -19,7 +20,7 @@ public class Order implements Comparable<Order>{
     public Order(User client, Restaurant restaurant, ArrayList<MenuItem> orderItems, Driver driver) {
         this.client = client;
         this.restaurant = restaurant;
-        this.orderItems = new ArrayList<MenuItem>();
+        this.orderItems = new ArrayList<>();
         this.orderItems.addAll(orderItems);
         this.totalPrice = this.getTotalPrice();
         this.orderStatus = "DELIVERING";
@@ -87,7 +88,7 @@ public class Order implements Comparable<Order>{
         this.restaurant = restaurant;
     }
 
-    public ArrayList<MenuItem> getOrderItems() {
+    public List<MenuItem> getOrderItems() {
         return orderItems;
     }
 

@@ -8,12 +8,13 @@ import user.User;
 import user.NormalUser;
 
 //import java.lang.reflect.Array;
+import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class UserService {
     //accounts
-    private static ArrayList<User>registeredUsers = new ArrayList<User>();
+    private static List<User> registeredUsers = new ArrayList<>();
     //
     //private User loggedUser = null;
 
@@ -70,7 +71,7 @@ public class UserService {
         registeredUsers.remove(userToDelete);
     }
 
-    public static ArrayList<User> getRegisteredUsers() {
+    public static List<User> getRegisteredUsers() {
         return registeredUsers;
     }
 

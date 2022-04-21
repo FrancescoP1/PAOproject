@@ -11,15 +11,15 @@ import user.NormalUser;
 import java.util.*;
 
 public class Menu {
-    private static ArrayList<Restaurant> restaurants;
-    private static ArrayList<Order> allOrders;
+    private static List<Restaurant> restaurants;
+    private static List<Order> allOrders;
     private static Queue<Driver> availableDrivers;
     private static User loggedUser;
     //private static UserService userLink;
 
     public Menu() {
-        restaurants = new ArrayList<Restaurant>();
-        allOrders = new ArrayList<Order>();
+        restaurants = new ArrayList<>();
+        allOrders = new ArrayList<>();
         loggedUser = null;
         availableDrivers = new LinkedList<Driver>();
         //userLink = new UserService();
@@ -46,7 +46,7 @@ public class Menu {
 
     //asigns the drivers in the driverQueue -> called at the start of the program
     public static void initializeDriverQueue() {
-        ArrayList<User> allUsers = UserService.getRegisteredUsers();
+        List<User> allUsers = UserService.getRegisteredUsers();
         for(User user : allUsers) {
             if(user instanceof Driver) {
                 Driver aux = (Driver) user;
@@ -220,7 +220,7 @@ public class Menu {
     }
 
     public static void showAllUsers() {
-        ArrayList<User> allUsers = UserService.getRegisteredUsers();
+        List<User> allUsers = UserService.getRegisteredUsers();
         for(User user : allUsers) {
             System.out.println(user.toString());
         }
