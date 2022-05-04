@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.UserAccountException;
 import food.MenuItem;
 import order.Order;
 import restaurant.Restaurant;
@@ -11,17 +12,22 @@ import user.NormalUser;
 import java.util.*;
 
 public class Menu {
-    private static List<Restaurant> restaurants;
-    private static List<Order> allOrders;
+    private static ArrayList<Restaurant> restaurants;
+    private static ArrayList<Order> allOrders;
     private static Queue<Driver> availableDrivers;
     private static User loggedUser;
     //private static UserService userLink;
+    private static DataWriter csvWriter;
+    private static AuditService logger;
 
     public Menu() {
-        restaurants = new ArrayList<>();
-        allOrders = new ArrayList<>();
+        restaurants = new ArrayList<Restaurant>();
+        allOrders = new ArrayList<Order>();
         loggedUser = null;
         availableDrivers = new LinkedList<Driver>();
+        csvWriter = DataWriter.getInstance();
+        logger = AuditService.getAudit();
+        logger.log("System,Menu initialized,");
         //userLink = new UserService();
     }
 
@@ -37,16 +43,18 @@ public class Menu {
 
     public static void addRestaurant(Restaurant restaurant) {
         restaurants.add(restaurant);
+        logger.log("System,Added restaurant id: " + restaurant.getRestaurantId() + " to restaurant list,");
     }
 
     //adds a user to the registered users ArrayList -> to remove
     public static void addUser(User user) {
         UserService.addUser(user);
+        //csvWriter.writeToDb(user, User.class);
     }
 
     //asigns the drivers in the driverQueue -> called at the start of the program
     public static void initializeDriverQueue() {
-        List<User> allUsers = UserService.getRegisteredUsers();
+        ArrayList<User> allUsers = UserService.getRegisteredUsers();
         for(User user : allUsers) {
             if(user instanceof Driver) {
                 Driver aux = (Driver) user;
@@ -67,13 +75,18 @@ public class Menu {
 
     //shows a different menu for each type of user
     public static void showMenu() {
+        String message = "System,Displayed %s menu,";
         if(loggedUser == null) {
+            logger.log(String.format(message, "guest"));
             guest();
         } else if(loggedUser instanceof Driver) {
+            logger.log(String.format(message, "driver"));
             driver();
         } else if(loggedUser instanceof Admin) {
+            logger.log(String.format(message, "admin"));
             admin();
         } else if(loggedUser instanceof NormalUser) {
+            logger.log(String.format(message, "normal-user"));
             basicUser();
         }
     }
@@ -86,9 +99,33 @@ public class Menu {
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
         if(option == 1) {
-            UserService.registerUser("normalUser");
+            //logger.log("Guest,Chose option 1: register,");
+            User registeredUser = UserService.registerUser("normalUser");
+            csvWriter.writeToDb(registeredUser, User.class);
+            if(registeredUser != null) {
+                logger.log("Guest,Registered new user id: " + registeredUser.getUserId() + ",");
+            }
         } else if (option == 2) {
+            /*
             loggedUser =  UserService.login();
+            if(loggedUser != null) {
+                logger.log("User id: " + loggedUser.getUserId() + ",Logged in,");
+            }
+
+             */
+            try {
+                loggedUser = UserService.login();
+                if(loggedUser == null){
+                    throw new UserAccountException("Wrong email/password");
+                }
+            } catch(UserAccountException ex) {
+                System.err.println(ex.toString());
+            }
+
+            if(loggedUser != null) {
+                logger.log("User id: " + loggedUser.getUserId() + ",Logged in,");
+            }
+
         }
     }
 
@@ -104,7 +141,9 @@ public class Menu {
             Menu.selectRestaurants();
         } else if(option == 2) {
             showUserOrders(loggedUser);
+            logger.log("User id: " + loggedUser.getUserId() + ",Viewed his/her orders,");
         } else if (option == 3) {
+            logger.log("User id: " + loggedUser.getUserId() + ",Logged off,");
             loggedUser = UserService.logOff();
             showMenu();
         }
@@ -112,6 +151,7 @@ public class Menu {
 
     //shows all the restaurants in the app
     public static void selectRestaurants() {
+        logger.log("System,Displayed list of restaurants,");
         System.out.println("Please choose the restaurant you want to order from: ");
         for(int i = 0; i < Menu.restaurants.size(); ++i) {
             System.out.println("ID: " + i + " " + Menu.restaurants.get(i).getRestaurantName() + " (press " + i + ", then enter");
@@ -129,6 +169,7 @@ public class Menu {
     public static void showRestaurantMenu(int id) {
         if(id >= 0 && id < Menu.restaurants.size()) {
             Restaurant restaurant = restaurants.get(id);
+            logger.log("User id: " + loggedUser.getUserId() + ", viewed restaurant id: " + restaurant.getRestaurantId() + ",");
             ArrayList<MenuItem> foods = restaurant.getMenu();
             int i;
             int option = -1;
@@ -143,9 +184,15 @@ public class Menu {
                 option = sc1.nextInt();
                 if(option >= 0 && option < foods.size()) {
                     chosenItems.add(foods.get(option));
+                    logger.log("User id: " + loggedUser.getUserId() + ",Picked menu item id: " + foods.get(option).getItemId() + ",");
                 }
             }
             allOrders.add(new Order(loggedUser, restaurants.get(id), chosenItems, Menu.getAvailableDriver()));
+
+            if(allOrders.size() > 0) {
+                csvWriter.writeToDb(allOrders.get(allOrders.size() - 1), Order.class);
+                logger.log("User id: " + loggedUser.getUserId() + ",Launched order id: " + allOrders.get(allOrders.size() - 1).getOrderId() + ",");
+            }
             basicUser();
         }
 
@@ -160,13 +207,16 @@ public class Menu {
         System.out.println("4. Logout (press 4, then enter)");
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
+        String message = "Driver id: " + loggedUser.getUserId() + ",";
         if(option == 4) {
+            logger.log(message + "logged off,");
             loggedUser = UserService.logOff();
         } else if(option == 1) {
             if(loggedUser instanceof Driver) {
                 Driver aux = (Driver) loggedUser;
                 Order currentOrder = aux.getAssignedOrder();
                 if(currentOrder != null) {
+                    logger.log(message + "viewed his assigned order,");
                     currentOrder.showOrderInfo();
                 }
                 else {
@@ -180,11 +230,13 @@ public class Menu {
             System.out.println("Congratulations for delivering your order!");
             Order currentOrder = aux.getAssignedOrder();
             if(currentOrder != null) {
+                logger.log(message + "Delivered order id: " + currentOrder.getOrderId() + ",");
                 aux.finishOrder();
             } else {
                 System.out.println("You currently have no order assigned");
             }
         } else if(option == 3) {
+            logger.log(message + "Viewed previously delivered orders,");
             showUserOrders(loggedUser);
         }
     }
@@ -194,18 +246,36 @@ public class Menu {
     public static void showUserOrders(User user) {
         //sortare crescatoare dupa pretul total al unei comenzi
         Collections.sort(allOrders);
+        //lambda expressions
         if(user instanceof NormalUser) {
+            allOrders.forEach((order) -> {
+                if(order.getClientId().compareTo(user.getUserId()) == 0) {
+                    order.showOrderInfo();
+                }
+            });
+            /*
             for(Order order : allOrders) {
-                if(order.getClientId() == user.getUserId()) {
+                if(order.getClientId().compareTo(user.getUserId()) == 0) {
                     order.showOrderInfo();
                 }
             }
+
+             */
         } else if(user instanceof Driver) {
+            allOrders.forEach((order) -> {
+                if(order.getDriverId().compareTo(user.getUserId()) == 0) {
+                    order.showOrderInfo();
+                }
+            });
+
+            /*
             for(Order order : allOrders) {
-                if(order.getDriverId() == user.getUserId()) {
+                if(order.getDriverId().compareTo(user.getUserId()) == 0) {
                     order.showOrderInfo();
                 }
             }
+
+             */
         }
 
     }
@@ -220,7 +290,7 @@ public class Menu {
     }
 
     public static void showAllUsers() {
-        List<User> allUsers = UserService.getRegisteredUsers();
+        ArrayList<User> allUsers = UserService.getRegisteredUsers();
         for(User user : allUsers) {
             System.out.println(user.toString());
         }
@@ -237,15 +307,21 @@ public class Menu {
         //-> more functionalities to be implemented, such as editing restaurant properties, etc.
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
+        String message = "Admin id: " + loggedUser.getUserId() + ",";
         if(option == 1) {
+            logger.log(message + ",Viewed all previous orders,");
             showAllOrders();
         } else if(option == 2) {
+            logger.log(message + ",Viewed all registered users,");
             showAllUsers();
         } else if(option == 3) {
+            logger.log(message + ",Registered new driver,");
             UserService.registerUser("driver");
         } else if(option == 4) {
+            logger.log(message + ",Registered new user,");
             UserService.registerUser("admin");
         } else if(option == 5) {
+            logger.log(message + ",Logged off,");
             loggedUser = UserService.logOff();
         }
     }

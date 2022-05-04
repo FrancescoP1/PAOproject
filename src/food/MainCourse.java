@@ -1,5 +1,7 @@
 package food;
 
+import java.util.UUID;
+
 public class MainCourse extends MenuItem{
     double mass; //in grams
     double proteins; //in grams
@@ -12,6 +14,12 @@ public class MainCourse extends MenuItem{
 
     public MainCourse(String itemName, double itemPrice, double mass, double proteins) {
         super(itemName, itemPrice);
+        this.mass = mass;
+        this.proteins = proteins;
+    }
+
+    public MainCourse(UUID itemId, String itemName, double itemPrice, double mass, double proteins) {
+        super(itemId, itemName, itemPrice);
         this.mass = mass;
         this.proteins = proteins;
     }
@@ -41,6 +49,6 @@ public class MainCourse extends MenuItem{
 
     @Override
     public String getType() {
-        return "main course";
+        return "main-course";
     }
 }

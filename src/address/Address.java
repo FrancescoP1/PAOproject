@@ -63,6 +63,13 @@ public class Address {
                 ", number=" + number;
     }
 
+    public String writeToCsv() {
+        StringBuilder str = new StringBuilder(this.getDistrict()).append(",");
+        str.append(this.getStreet()).append(",");
+        str.append(this.getNumber());
+        return str.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

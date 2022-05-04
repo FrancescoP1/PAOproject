@@ -3,24 +3,37 @@ package user;
 import address.Address;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class User {
     private static int numberOfUsers = 0;
-    private int userId;
+    private UUID userId;
     private String name;
     private Address address;
     private String phoneNumber;
-    private String emailAdress;
+    private String emailAddress;
     private String password;
 
-    public User(String name, Address address, String phoneNumber, String emailAdress, String password) {
+    public User(String name, Address address, String phoneNumber, String emailAddress, String password) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.userId = User.numberOfUsers++;
-        this.emailAdress = emailAdress;
+        this.userId = UUID.randomUUID();
+        this.emailAddress = emailAddress;
         this.password = password;
+        User.numberOfUsers++;
     }
+
+    public User(UUID userId, String name, Address address, String phoneNumber, String emailAddress, String password) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userId = userId;
+        this.emailAddress = emailAddress;
+        this.password = password;
+        User.numberOfUsers++;
+    }
+
 
     public User() {
         this.name = "";
@@ -32,11 +45,11 @@ public abstract class User {
         return numberOfUsers;
     }
 
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
@@ -65,29 +78,33 @@ public abstract class User {
     }
 
     public String getEmailAddress() {
-        return this.emailAdress;
+        return this.emailAddress;
     }
 
-    public void setEmailAddress(String emailAdress) {
-        this.emailAdress = emailAdress;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmailAdress() {
-        return emailAdress;
-    }
-
     public void setEmailAdress(String emailAdress) {
-        this.emailAdress = emailAdress;
+        this.emailAddress = emailAdress;
+    }
+    public String WriteToCsv() {
+        //driver,68108442-990d-43c5-b7d2-8591e9a9edb0,Fane,Constanta,Str. Cazinoului,7,075,fane@yahoo.com,123456
+        StringBuilder str = new StringBuilder(this.getType()).append(",");
+        str.append(this.getUserId().toString()).append(",");
+        str.append(this.getName()).append(",");
+        str.append(this.address.writeToCsv()).append(",");
+        str.append(this.getPhoneNumber()).append(",");
+        str.append(this.getEmailAddress()).append(",");
+        str.append(this.getPassword()).append("\n");
+        return str.toString();
     }
 
+    public abstract String getType();
     @Override
     public String toString() {
         return "User{" +
@@ -95,7 +112,7 @@ public abstract class User {
                 ", name='" + name + '\'' +
                 ", address=" + address +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", emailAdress='" + emailAdress + '\'' +
+                ", emailAdress='" + emailAddress + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
@@ -105,11 +122,11 @@ public abstract class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getUserId() == user.getUserId() && getEmailAdress().equals(user.getEmailAdress());
+        return getUserId() == user.getUserId() && getEmailAddress().equals(user.getEmailAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getEmailAdress());
+        return Objects.hash(getUserId(), getEmailAddress());
     }
 }

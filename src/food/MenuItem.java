@@ -1,15 +1,24 @@
 package food;
 
+import java.util.UUID;
+
 public abstract class MenuItem {
     private static int numberOfMenuItems = 0;
-    private int itemId;
+    private UUID itemId;
     private String itemName;
     private double itemPrice;
 
     public MenuItem(String itemName, double itemPrice) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.itemId = MenuItem.numberOfMenuItems;
+        this.itemId = UUID.randomUUID();
+        MenuItem.numberOfMenuItems++;
+    }
+
+    public MenuItem(UUID itemId, String itemName, double itemPrice){
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
         MenuItem.numberOfMenuItems++;
     }
 
@@ -27,7 +36,7 @@ public abstract class MenuItem {
         return numberOfMenuItems;
     }
 
-    public int getItemId() {
+    public UUID getItemId() {
         return itemId;
     }
 
@@ -52,9 +61,11 @@ public abstract class MenuItem {
         System.out.print("This item: " + this.getItemName() + " (item-id: " + this.getItemId() + ") has a price of: " + this.getItemPrice());
     } */
     public abstract String getType();
-
+    //public abstract String writeToCsv();
     public String getBasicDescription() {
         return ("type: " + this.getType() + " | name: " + this.getItemName() + " | price: " + this.getItemPrice());
     }
+
+
 
 }

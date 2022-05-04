@@ -1,11 +1,19 @@
 package food;
 
+import java.util.UUID;
+
 public class Desert extends MenuItem{
     private double sugar; //grams of sugar
     private double mass;
 
     public Desert(String itemName, double itemPrice, double sugar, double mass) {
         super(itemName, itemPrice);
+        this.mass = mass;
+        this.sugar = sugar;
+    }
+
+    public Desert(UUID itemId, String itemName, double itemPrice, double sugar, double mass) {
+        super(itemId, itemName, itemPrice);
         this.mass = mass;
         this.sugar = sugar;
     }

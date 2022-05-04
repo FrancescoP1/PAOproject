@@ -8,13 +8,12 @@ import user.User;
 import user.NormalUser;
 
 //import java.lang.reflect.Array;
-import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class UserService {
     //accounts
-    private static List<User> registeredUsers = new ArrayList<>();
+    private static ArrayList<User>registeredUsers = new ArrayList<User>();
     //
     //private User loggedUser = null;
 
@@ -40,7 +39,7 @@ public class UserService {
         return extractUser(email, password);
     }
 
-    public static void registerUser(String type) {
+    public static User registerUser(String type) {
         System.out.println("Register");
         Scanner sc1 = new Scanner(System.in);
         System.out.println("E-mail: ");
@@ -55,13 +54,18 @@ public class UserService {
         String name = sc1.nextLine();
         System.out.println("Your phone number: ");
         String phoneNumber = sc1.nextLine();
-        if(type.equals("normalUser")) {
-            registeredUsers.add(new NormalUser(name, address, phoneNumber, email, password));
-        } else if (type.equals("driver")) {
-            registeredUsers.add(new Driver(name, address, phoneNumber, email, password));
-        } else if (type.equals("admin")) {
-            registeredUsers.add(new Admin(name, address, phoneNumber,email, password));
+        switch (type) {
+            case "normalUser":
+                registeredUsers.add(new NormalUser(name, address, phoneNumber, email, password));
+                return registeredUsers.get(registeredUsers.size() - 1);
+            case "driver":
+                registeredUsers.add(new Driver(name, address, phoneNumber, email, password));
+                return registeredUsers.get(registeredUsers.size() - 1);
+            case "admin":
+                registeredUsers.add(new Admin(name, address, phoneNumber, email, password));
+                return registeredUsers.get(registeredUsers.size() - 1);
         }
+        return null;
     }
 
     public static User logOff() {
@@ -71,7 +75,7 @@ public class UserService {
         registeredUsers.remove(userToDelete);
     }
 
-    public static List<User> getRegisteredUsers() {
+    public static ArrayList<User> getRegisteredUsers() {
         return registeredUsers;
     }
 

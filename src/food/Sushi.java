@@ -1,11 +1,19 @@
 package food;
 
+import java.util.UUID;
+
 public class Sushi extends MenuItem{
     double mass; //in grams
     double omegaThree; //in grams
 
     public Sushi(String itemName, double itemPrice, double mass, double omegaThree) {
         super(itemName, itemPrice);
+        this.mass = mass;
+        this.omegaThree = omegaThree;
+    }
+
+    public Sushi(UUID itemId, String itemName, double itemPrice, double mass, double omegaThree) {
+        super(itemId, itemName, itemPrice);
         this.mass = mass;
         this.omegaThree = omegaThree;
     }

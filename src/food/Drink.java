@@ -1,5 +1,7 @@
 package food;
 
+import java.util.UUID;
+
 public class Drink extends MenuItem{
     private int volume; //in ml
     private float alcConcentration; //
@@ -14,6 +16,18 @@ public class Drink extends MenuItem{
         }
 
     }
+
+    public Drink(UUID itemId, String itemName, double itemPrice, int volume, float alcConcentration) {
+        super(itemId, itemName, itemPrice);
+        this.volume = volume;
+        if(alcConcentration < 100 && alcConcentration >= 0){
+            this.alcConcentration = alcConcentration;
+        } else {
+            this.alcConcentration = 0;
+        }
+
+    }
+
     //copy constructor
     public Drink(Drink dr1) {
         super(dr1);

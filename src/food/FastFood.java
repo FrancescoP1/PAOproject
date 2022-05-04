@@ -1,5 +1,7 @@
 package food;
 
+import java.util.UUID;
+
 public class FastFood extends MenuItem{
     double calories;
     double mass;
@@ -12,6 +14,12 @@ public class FastFood extends MenuItem{
 
     public FastFood(String itemName, double itemPrice, double calories, double mass) {
         super(itemName, itemPrice);
+        this.calories = calories;
+        this.mass = mass;
+    }
+
+    public FastFood(UUID itemId, String itemName, double itemPrice, double calories, double mass) {
+        super(itemId, itemName, itemPrice);
         this.calories = calories;
         this.mass = mass;
     }

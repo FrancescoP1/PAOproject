@@ -7,20 +7,22 @@ import user.Driver;
 import user.User;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 public class Order implements Comparable<Order>{
+    private UUID orderId;
     private User client;
     private Restaurant restaurant;
-    private List<MenuItem> orderItems;
+    private ArrayList<MenuItem> orderItems;
     private double totalPrice;
     private String orderStatus;
     private Driver driver;
 
     public Order(User client, Restaurant restaurant, ArrayList<MenuItem> orderItems, Driver driver) {
+        this.orderId = UUID.randomUUID();
         this.client = client;
         this.restaurant = restaurant;
-        this.orderItems = new ArrayList<>();
+        this.orderItems = new ArrayList<MenuItem>();
         this.orderItems.addAll(orderItems);
         this.totalPrice = this.getTotalPrice();
         this.orderStatus = "DELIVERING";
@@ -30,7 +32,29 @@ public class Order implements Comparable<Order>{
         }
     }
 
-    public int getClientId() {
+    public Order(UUID orderId,User client, Restaurant restaurant, ArrayList<MenuItem> orderItems, Driver driver) {
+        this.orderId = orderId;
+        this.client = client;
+        this.restaurant = restaurant;
+        this.orderItems = new ArrayList<MenuItem>();
+        this.orderItems.addAll(orderItems);
+        this.totalPrice = this.getTotalPrice();
+        this.orderStatus = "DELIVERING";
+        this.driver = driver;
+        if(driver != null) {
+            this.driver.setAssignedOrder(this);
+        }
+    }
+
+    public UUID getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(UUID orderId) {
+        this.orderId = orderId;
+    }
+
+    public UUID getClientId() {
         return client.getUserId();
     }
 
@@ -66,8 +90,10 @@ public class Order implements Comparable<Order>{
         this.orderStatus = status;
     }
 
-    public int getDriverId() {
-        return this.driver.getUserId();
+    public UUID getDriverId() {
+        if(this.driver != null)
+            return this.driver.getUserId();
+        return null;
     }
 
     /*
@@ -88,7 +114,7 @@ public class Order implements Comparable<Order>{
         this.restaurant = restaurant;
     }
 
-    public List<MenuItem> getOrderItems() {
+    public ArrayList<MenuItem> getOrderItems() {
         return orderItems;
     }
 
@@ -110,7 +136,21 @@ public class Order implements Comparable<Order>{
         System.out.println("Total price to pay: " + this.totalPrice);
         System.out.println("Order status: " + this.getOrderStatus());
     }
-
+    public String writeToCsv() {
+        //order id, client id, restaurant id, driver id, item1, item2,..., itemN
+        StringBuilder str = new StringBuilder(this.getOrderId().toString()).append(",");
+        str.append(this.getClientId()).append(",");
+        str.append(this.restaurant.getRestaurantId()).append(",");
+        str.append(this.getDriverId()).append(",");
+        for(int i = 0; i < this.orderItems.size(); ++i) {
+            str.append((this.orderItems.get(i)).getItemId());
+            if(i != this.orderItems.size() - 1) {
+                str.append(",");
+            }
+        }
+        str.append("\n");
+        return str.toString();
+    }
     @Override
     public int compareTo(Order o) {
         if(this.getTotalPrice() > o.getTotalPrice()) {

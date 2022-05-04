@@ -1,10 +1,13 @@
 import food.*;
 import address.Address;
 import restaurant.Restaurant;
+import service.DataReader;
 import service.Menu;
 import user.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args){
@@ -31,6 +34,7 @@ public class Main {
         System.out.println(rest1);
         */
         //User loggedUser = null;
+        /*
         Address adr1 = new Address("Valcea", "Castana", 34);
         Address adr2 = new Address("Bucuresti", "Lalelor", 28);
         Address adr3 = new Address("Constanta", "Cazinoului", 7);
@@ -64,6 +68,25 @@ public class Main {
         while(true) {
             Menu.showMenu();
         }
+         */
+        DataReader readData = DataReader.getInstance();
+        ArrayList<User> registeredUsers = readData.readRegisteredUsers();
+        ArrayList<Restaurant> restaurants = readData.readRestaurants();
 
+        HashMap<UUID, Restaurant> restaurantsById = DataReader.getRestaurantsByID(restaurants);
+        //restaurantsById.forEach((k, v) -> System.out.println(k));
+        ArrayList <MenuItem> menuItems = readData.readFoods(restaurantsById);
+
+        Menu AppMenu = new Menu();
+        for(int i = 0; i < registeredUsers.size(); ++i) {
+            Menu.addUser(registeredUsers.get(i));
+        }
+        for(int i = 0; i < restaurants.size(); ++i) {
+            Menu.addRestaurant(restaurants.get(i));
+        }
+        Menu.initializeDriverQueue();
+        while(true) {
+            Menu.showMenu();
+        }
     }
 }
