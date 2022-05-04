@@ -290,6 +290,7 @@ public class Menu {
     }
 
     public static void showAllUsers() {
+
         ArrayList<User> allUsers = UserService.getRegisteredUsers();
         for(User user : allUsers) {
             System.out.println(user.toString());
