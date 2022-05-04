@@ -22,7 +22,7 @@ public class AuditService {
     private AuditService() {
         try{
             String filePath = "data/audit.csv";
-            new FileWriter(filePath, false).close();
+            //new FileWriter(filePath, false).close();
             bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
         }catch (IOException exception) {
             exception.printStackTrace();
