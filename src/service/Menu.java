@@ -1,5 +1,6 @@
 package service;
 
+import dao.repository.UserRepository;
 import exceptions.UserAccountException;
 import food.MenuItem;
 import order.Order;
@@ -104,6 +105,7 @@ public class Menu {
             csvWriter.writeToDb(registeredUser, User.class);
             if(registeredUser != null) {
                 logger.log("Guest,Registered new user id: " + registeredUser.getUserId() + ",");
+                UserRepository.getUserRepository().insertUser(registeredUser);
             }
         } else if (option == 2) {
             /*
@@ -135,6 +137,8 @@ public class Menu {
         System.out.println("1. Make an order (press1, then enter)");
         System.out.println("2. View my order history (press 2, then enter)");
         System.out.println("3. Logout (press 3, then enter)");
+        System.out.println("4. Update my account (press 4, then enter)");
+        System.out.println("5. Go  back (press 5, then enter)");
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
         if(option == 1) {
@@ -145,6 +149,10 @@ public class Menu {
         } else if (option == 3) {
             logger.log("User id: " + loggedUser.getUserId() + ",Logged off,");
             loggedUser = UserService.logOff();
+            showMenu();
+        } else if (option == 4) {
+            updateAccount();
+        } else if (option == 5) {
             showMenu();
         }
     }
@@ -177,7 +185,7 @@ public class Menu {
                 System.out.println(i + ". " + foods.get(i).getBasicDescription());
             }
             System.out.println(foods.size() + ". Comanda");
-            ArrayList<MenuItem> chosenItems = new ArrayList<MenuItem>();
+            ArrayList<MenuItem> chosenItems = new ArrayList<>();
             System.out.println("Choose the IDs of the foods that you want to order. You can select multiple ids, separate them with a space");
             while(option != foods.size()) {
                 Scanner sc1 = new Scanner(System.in);
@@ -205,6 +213,7 @@ public class Menu {
         System.out.println("2. Mark current order as delivered (press 2, then enter)");
         System.out.println("3. View my delivery history (press 3, then enter)");
         System.out.println("4. Logout (press 4, then enter)");
+        System.out.println("5. Update account (press 5, then enter)");
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
         String message = "Driver id: " + loggedUser.getUserId() + ",";
@@ -238,10 +247,108 @@ public class Menu {
         } else if(option == 3) {
             logger.log(message + "Viewed previously delivered orders,");
             showUserOrders(loggedUser);
+        } else if (option == 5) {
+            updateAccount();
         }
+        showMenu();
     }
 
     //used to show a user's orders
+    public static void deleteAccount() {
+        System.out.println("You chose to delete your account! Please confirm you choice!");
+        System.out.println("1. Confirm choice -> permanently delete my account!");
+        System.out.println("2. Cancel -> go back!");
+        Scanner sc1 = new Scanner(System.in);
+        int option = sc1.nextInt();
+        if(option == 1) {
+            UserRepository.getUserRepository().deleteUser(loggedUser.getUserId().toString());
+            UserService.removeUser(loggedUser);
+            loggedUser = UserService.logOff();
+            System.out.println("You have successfully deleted your account!");
+            redirectPause(2);
+            showMenu();
+        } else {
+            showMenu();
+        }
+    }
+
+    public static void updateAccount(){
+        System.out.println("1. Change email (press 1, then enter)");
+        System.out.println("2. Change name (press 2, then enter)");
+        System.out.println("3. Change password (press 3, then enter)");
+        System.out.println("4. Delete account (press 4, then enter");
+        System.out.println("5. Go back (press 5, then enter)");
+        Scanner sc = new Scanner(System.in);
+        int option = sc.nextInt();
+        if(option == 1){
+            changeEmail();
+        } else if (option == 2) {
+            changeName();
+        } else if (option == 3) {
+            changePassword();
+        } else if (option == 4) {
+            deleteAccount();
+        } else {
+            System.out.println("Invalid option...redirecting you to the main menu!");
+        }
+        redirectPause(2);
+        showMenu();
+    }
+    public static void changePassword() {
+        System.out.println("You chose to change your password! Please enter your new password:");
+        Scanner sc1 = new Scanner(System.in);
+        String pass1 = sc1.nextLine();
+        pass1 = pass1.trim();
+        System.out.println("Re-type the password you previously entered: ");
+        String pass2 = sc1.nextLine();
+        pass2 = pass2.trim();
+        if(pass1.equals(pass2)){
+            UserRepository.getUserRepository().updateUserPassword(loggedUser.getUserId().toString(), pass1);
+            System.out.println("You changed your password successfully! You will be redirected to the main menu!");
+            loggedUser.setPassword(pass1);
+            System.out.println("Successfully modified you password!");
+            redirectPause(2);
+            showMenu();
+        } else {
+            System.out.println("Passwords do not match!");
+            redirectPause(2);
+            showMenu();
+        }
+    }
+    public static void changeEmail(){
+        System.out.println("Your current email address is: " + loggedUser.getEmailAddress());
+        System.out.println("Please enter your new email address, or press 1 to go back: ");
+        Scanner sc = new Scanner(System.in);
+        String newEmail = sc.nextLine();
+        if(newEmail.chars().allMatch(Character::isDigit)){
+            System.out.println("You chose to go back!");
+        } else {
+            newEmail = newEmail.strip();
+            UserRepository.getUserRepository().updateUser(loggedUser.getUserId().toString(), "email", newEmail);
+            loggedUser.setEmailAddress(newEmail);
+            System.out.println("Successfully modified your email!");
+        }
+        redirectPause(2);
+        showMenu();
+
+    }
+
+    public static void changeName() {
+        System.out.println("Your current name is: " + loggedUser.getName());
+        System.out.println("Please enter your new name, or press 1 to go back: ");
+        Scanner sc = new Scanner(System.in);
+        String newName = sc.nextLine();
+        newName = newName.strip();
+        if(newName.chars().allMatch(Character::isDigit)){
+            System.out.println("You chose to go back!");
+        } else {
+            UserRepository.getUserRepository().updateUser(loggedUser.getUserId().toString(), "name", newName);
+            loggedUser.setName(newName);
+            System.out.println("Successfully modified your name!");
+        }
+        redirectPause(2);
+        showMenu();
+    }
 
     public static void showUserOrders(User user) {
         //sortare crescatoare dupa pretul total al unei comenzi
@@ -304,7 +411,9 @@ public class Menu {
         System.out.println("2. View all user's information (press 2, then enter)");
         System.out.println("3. Create new Driver (press 3, then enter)");
         System.out.println("4. Create new Admin (press 4, then enter");
-        System.out.println("5. Logout (press 4, then enter)");
+        System.out.println("5. Delete user (press 5, then enter)");
+        System.out.println("6. Update my account (press 6, then enter)");
+        System.out.println("7. Logout (press 7, then enter)");
         //-> more functionalities to be implemented, such as editing restaurant properties, etc.
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
@@ -317,11 +426,22 @@ public class Menu {
             showAllUsers();
         } else if(option == 3) {
             logger.log(message + ",Registered new driver,");
-            UserService.registerUser("driver");
+            User registeredUser = UserService.registerUser("driver");
+            csvWriter.writeToDb(registeredUser, User.class);
         } else if(option == 4) {
             logger.log(message + ",Registered new user,");
-            UserService.registerUser("admin");
-        } else if(option == 5) {
+            User registeredUser = UserService.registerUser("admin");
+            csvWriter.writeToDb(registeredUser, User.class);
+        } else if(option == 5){
+            System.out.println("Write the email of the user that you want to delete: ");
+            String email =  sc1.nextLine().trim();
+            UserRepository.getUserRepository().deleteUserByEmail(email);
+            UserService.removeUser(email);
+            logger.log(message + ",Deleted a user,");
+        } else if(option == 6) {
+            updateAccount();
+        }
+        else if(option == 7) {
             logger.log(message + ",Logged off,");
             loggedUser = UserService.logOff();
         }

@@ -5,12 +5,15 @@ import service.DataReader;
 import service.Menu;
 import user.*;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-
+import dao.repository.*;
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         /*
         //System.out.println("Hello world");
         Desert d1 = new Desert("Tiramisu", 4.5, 50, 100);
@@ -70,17 +73,24 @@ public class Main {
         }
          */
         DataReader readData = DataReader.getInstance();
-        ArrayList<User> registeredUsers = readData.readRegisteredUsers();
+        ArrayList<User> registeredUsers = UserRepository.getUserRepository().loadRegisteredUsers();
+        /*
+        for(int i = 0; i < registeredUsers.size(); ++i){
+            userRepository.insertUser(registeredUsers.get(i));
+        }
+        */
         ArrayList<Restaurant> restaurants = readData.readRestaurants();
 
         HashMap<UUID, Restaurant> restaurantsById = DataReader.getRestaurantsByID(restaurants);
         //restaurantsById.forEach((k, v) -> System.out.println(k));
         ArrayList <MenuItem> menuItems = readData.readFoods(restaurantsById);
 
+
         Menu AppMenu = new Menu();
         for(int i = 0; i < registeredUsers.size(); ++i) {
             Menu.addUser(registeredUsers.get(i));
         }
+
         for(int i = 0; i < restaurants.size(); ++i) {
             Menu.addRestaurant(restaurants.get(i));
         }

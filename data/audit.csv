@@ -16,3 +16,77 @@ System,Displayed guest menu,2022-05-04 17:17:01.164015
 System,Menu initialized,2022-05-04 17:17:13.1718218
 System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-04 17:17:13.2186847
 System,Displayed guest menu,2022-05-04 17:17:13.2343131
+System,Menu initialized,2022-05-29 16:18:55.223147
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 16:18:55.2471453
+System,Displayed guest menu,2022-05-29 16:18:55.2591341
+System,Menu initialized,2022-05-29 18:02:56.3311968
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 18:02:56.347199
+System,Displayed guest menu,2022-05-29 18:02:56.3552035
+System,Menu initialized,2022-05-29 18:19:24.0120536
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 18:19:24.0200602
+System,Displayed guest menu,2022-05-29 18:19:24.0280488
+System,Menu initialized,2022-05-29 18:20:01.0744896
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 18:20:01.0904886
+System,Displayed guest menu,2022-05-29 18:20:01.0984948
+System,Menu initialized,2022-05-29 19:00:54.6416067
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 19:00:54.6496023
+System,Displayed guest menu,2022-05-29 19:00:54.6576026
+System,Menu initialized,2022-05-29 19:03:21.2086495
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 19:03:21.2326393
+System,Displayed guest menu,2022-05-29 19:03:21.2406421
+System,Menu initialized,2022-05-29 21:59:47.3906399
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 21:59:47.4226511
+System,Displayed guest menu,2022-05-29 21:59:47.4306388
+User id: 964f96ed-1af3-4e10-9388-6f18205a42c7,Logged in,2022-05-29 22:01:35.3366612
+System,Displayed admin menu,2022-05-29 22:01:35.3366612
+Admin id: 964f96ed-1af3-4e10-9388-6f18205a42c7,,Registered new driver,2022-05-29 22:01:40.8830125
+System,Displayed admin menu,2022-05-29 22:02:36.8356036
+Admin id: 964f96ed-1af3-4e10-9388-6f18205a42c7,,Logged off,2022-05-29 22:06:32.2952497
+System,Displayed guest menu,2022-05-29 22:06:32.2952497
+System,Menu initialized,2022-05-29 22:59:56.4879806
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 22:59:56.5279889
+System,Displayed guest menu,2022-05-29 22:59:56.543977
+System,Displayed guest menu,2022-05-29 23:00:17.2245603
+System,Displayed guest menu,2022-05-29 23:00:39.2204098
+System,Displayed guest menu,2022-05-29 23:01:25.6638898
+System,Menu initialized,2022-05-29 23:50:34.0227413
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 23:50:34.0467391
+System,Displayed guest menu,2022-05-29 23:50:34.0627358
+User id: 1f99f5a7-20e6-40ac-a893-db3fc9695dee,Logged in,2022-05-29 23:51:08.1000075
+System,Displayed driver menu,2022-05-29 23:51:08.1000075
+Driver id: 1f99f5a7-20e6-40ac-a893-db3fc9695dee,logged off,2022-05-29 23:51:17.3544624
+System,Displayed guest menu,2022-05-29 23:51:17.3544624
+System,Menu initialized,2022-05-29 23:59:27.9632237
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-29 23:59:27.9792209
+System,Displayed guest menu,2022-05-29 23:59:27.9952176
+User id: 1f99f5a7-20e6-40ac-a893-db3fc9695dee,Logged in,2022-05-29 23:59:47.3336778
+System,Displayed driver menu,2022-05-29 23:59:47.3336778
+System,Menu initialized,2022-05-30 00:02:03.9985183
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-30 00:02:04.0065116
+System,Displayed guest menu,2022-05-30 00:02:04.0305103
+User id: 1f99f5a7-20e6-40ac-a893-db3fc9695dee,Logged in,2022-05-30 00:02:16.4621514
+System,Displayed driver menu,2022-05-30 00:02:16.4621514
+System,Displayed driver menu,2022-05-30 00:02:27.3429553
+System,Menu initialized,2022-05-30 00:09:33.9421935
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-30 00:09:33.9581911
+System,Displayed guest menu,2022-05-30 00:09:33.990188
+User id: 1f99f5a7-20e6-40ac-a893-db3fc9695dee,Logged in,2022-05-30 00:09:45.345908
+System,Displayed driver menu,2022-05-30 00:09:45.345908
+System,Displayed driver menu,2022-05-30 00:09:59.8272002
+System,Displayed driver menu,2022-05-30 00:10:33.818308
+System,Displayed guest menu,2022-05-30 00:10:45.196186
+System,Menu initialized,2022-05-30 06:50:35.1188474
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-30 06:50:35.1428318
+System,Displayed guest menu,2022-05-30 06:50:35.1508395
+User id: 4bfbd7a4-f335-4989-91b7-491e7e7ffa3d,Logged in,2022-05-30 06:51:34.7717162
+System,Displayed normal-user menu,2022-05-30 06:51:34.7717162
+System,Displayed normal-user menu,2022-05-30 06:51:49.8375124
+System,Displayed normal-user menu,2022-05-30 06:52:23.8402218
+System,Menu initialized,2022-05-30 06:58:57.3921432
+System,Added restaurant id: d245eb55-4add-420f-be7e-54bdeef1f7a7 to restaurant list,2022-05-30 06:58:57.4160985
+System,Displayed guest menu,2022-05-30 06:58:57.4241066
+User id: 4bfbd7a4-f335-4989-91b7-491e7e7ffa3d,Logged in,2022-05-30 06:59:09.1466014
+System,Displayed normal-user menu,2022-05-30 06:59:09.1466014
+System,Displayed normal-user menu,2022-05-30 06:59:30.8007859
+System,Displayed normal-user menu,2022-05-30 07:00:02.036203
+System,Displayed normal-user menu,2022-05-30 07:00:28.4720308

@@ -2,6 +2,7 @@ package service;
 
 import address.Address;
 //import restaurant.Restaurant;
+import dao.repository.UserRepository;
 import user.Admin;
 import user.Driver;
 import user.User;
@@ -10,10 +11,10 @@ import user.NormalUser;
 //import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
-
+import dao.repository.UserRepository;
 public class UserService {
     //accounts
-    private static ArrayList<User>registeredUsers = new ArrayList<User>();
+    private static ArrayList<User>registeredUsers = new ArrayList<>();
     //
     //private User loggedUser = null;
 
@@ -57,15 +58,19 @@ public class UserService {
         switch (type) {
             case "normalUser":
                 registeredUsers.add(new NormalUser(name, address, phoneNumber, email, password));
-                return registeredUsers.get(registeredUsers.size() - 1);
+                break;
             case "driver":
                 registeredUsers.add(new Driver(name, address, phoneNumber, email, password));
-                return registeredUsers.get(registeredUsers.size() - 1);
+                break;
             case "admin":
                 registeredUsers.add(new Admin(name, address, phoneNumber, email, password));
-                return registeredUsers.get(registeredUsers.size() - 1);
+                break;
+            default:
+                return null;
         }
-        return null;
+        //adaugare in baza de date
+        UserRepository.getUserRepository().insertUser(registeredUsers.get(registeredUsers.size() - 1));
+        return registeredUsers.get(registeredUsers.size() - 1);
     }
 
     public static User logOff() {
@@ -81,5 +86,16 @@ public class UserService {
 
     public static void addUser(User user) {
         registeredUsers.add(user);
+    }
+    public static void removeUser(User user) {
+        registeredUsers.remove(user);
+    }
+    public static void removeUser(String email) {
+        for(int i = 0; i < registeredUsers.size(); ++i) {
+            if(registeredUsers.get(i).getEmailAddress().equalsIgnoreCase(email)){
+                registeredUsers.remove(i);
+                break;
+            }
+        }
     }
 }
