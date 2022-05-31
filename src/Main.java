@@ -73,14 +73,23 @@ public class Main {
         }
          */
         DataReader readData = DataReader.getInstance();
+        UserRepository.getUserRepository().createTable();
+        RestaurantRepository.getRestaurantRepository().createTable();
         ArrayList<User> registeredUsers = UserRepository.getUserRepository().loadRegisteredUsers();
+        //ArrayList<User> registeredUsers = readData.readRegisteredUsers();
         /*
         for(int i = 0; i < registeredUsers.size(); ++i){
-            userRepository.insertUser(registeredUsers.get(i));
+            UserRepository.getUserRepository().insertUser(registeredUsers.get(i));
         }
-        */
+         */
         ArrayList<Restaurant> restaurants = readData.readRestaurants();
+        /*
+        for(Restaurant rest : restaurants) {
+            RestaurantRepository.getRestaurantRepository().insertRestaurant(rest);
+        }
 
+         */
+        //ArrayList<Restaurant> restaurants = RestaurantRepository.getRestaurantRepository().loadRestaurants();
         HashMap<UUID, Restaurant> restaurantsById = DataReader.getRestaurantsByID(restaurants);
         //restaurantsById.forEach((k, v) -> System.out.println(k));
         ArrayList <MenuItem> menuItems = readData.readFoods(restaurantsById);

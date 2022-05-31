@@ -1,5 +1,7 @@
 package service;
 
+import address.Address;
+import dao.repository.RestaurantRepository;
 import dao.repository.UserRepository;
 import exceptions.UserAccountException;
 import food.MenuItem;
@@ -413,10 +415,12 @@ public class Menu {
         System.out.println("4. Create new Admin (press 4, then enter");
         System.out.println("5. Delete user (press 5, then enter)");
         System.out.println("6. Update my account (press 6, then enter)");
-        System.out.println("7. Logout (press 7, then enter)");
+        System.out.println("7. Manage restaurants (press 7, then enter)");
+        System.out.println("8. Logout (press 8, then enter)");
         //-> more functionalities to be implemented, such as editing restaurant properties, etc.
         Scanner sc1 = new Scanner(System.in);
         int option = sc1.nextInt();
+        //sc1.next();
         String message = "Admin id: " + loggedUser.getUserId() + ",";
         if(option == 1) {
             logger.log(message + ",Viewed all previous orders,");
@@ -434,16 +438,100 @@ public class Menu {
             csvWriter.writeToDb(registeredUser, User.class);
         } else if(option == 5){
             System.out.println("Write the email of the user that you want to delete: ");
-            String email =  sc1.nextLine().trim();
+            Scanner sc2 = new Scanner(System.in);
+            String email =  sc2.nextLine();
+            email = email.trim();
+            //System.out.println(email);
+            User deleteUser = UserService.removeUser(email);
             UserRepository.getUserRepository().deleteUserByEmail(email);
-            UserService.removeUser(email);
             logger.log(message + ",Deleted a user,");
         } else if(option == 6) {
             updateAccount();
+        } else if (option == 7){
+            manageRestaurants();
         }
-        else if(option == 7) {
+        else if(option == 8) {
             logger.log(message + ",Logged off,");
             loggedUser = UserService.logOff();
         }
+    }
+
+    public static void manageRestaurants() {
+        logger.log("System,Displayed list of restaurants,");
+        System.out.println("Please choose the restaurant you want to order from: ");
+        for (int i = 0; i < Menu.restaurants.size(); ++i) {
+            System.out.println("ID: " + i + " " + Menu.restaurants.get(i).getRestaurantName() + " (press " + i + ", then enter");
+        }
+        System.out.println("Add new restaurant (press " + restaurants.size() + " then enter)");
+        System.out.println("Go back (press " + (restaurants.size() + 1) +  " then enter)");
+        Scanner sc1 = new Scanner(System.in);
+        int option = sc1.nextInt();
+        if (option >= 0 && option < Menu.restaurants.size()) {
+            editRestaurant(Menu.restaurants.get(option));
+        } else if(option == Menu.restaurants.size()){
+            addNewRestaurant();
+        } else {
+            admin();
+        }
+
+    }
+
+    public static void editRestaurant(Restaurant rest){
+        System.out.println("You are now editing restaurant" + rest.getRestaurantName() + "id: " + rest.getRestaurantId());
+        System.out.println("1. Change restaurant name (press 1, then enter)");
+        System.out.println("2. Change restaurant phone (press 2, then enter)");
+        System.out.println("3. Delete restaurant (press 3, then enter)");
+        System.out.println("4. Go back (press 4, then enter)");
+        Scanner sc = new Scanner(System.in);
+        int option = sc.nextInt();
+        sc.nextLine();
+        if(option == 1) {
+            System.out.println("Please enter the new name for the restaurant");
+            String name = sc.nextLine();
+            name = name.strip();
+            RestaurantRepository.getRestaurantRepository().updateRestaurant(rest.getRestaurantId().toString(), "name", name);
+            rest.setRestaurantName(name);
+
+        } else if(option == 2) {
+            System.out.println("Please enter the new phone number: ");
+            String phone = sc.nextLine();
+            phone = phone.strip();
+            if(phone.length() > 2){
+                RestaurantRepository.getRestaurantRepository().updateRestaurant(rest.getRestaurantId().toString(), "phone", phone);
+                rest.setPhoneNumber(phone);
+                System.out.println("Sucessfully updated restaurant phone number");
+            }
+        } else if(option == 3) {
+            System.out.println("You chose to delete restaurant id " + rest.getRestaurantId());
+            System.out.println("1. Confirm my choice (press 1, then enter)");
+            System.out.println("2. Cancel and go back (press 2, then enter)");
+            option = sc.nextInt();
+            if(option == 1){
+                System.out.println("Deleted restaurant id " + rest.getRestaurantId());
+                RestaurantRepository.getRestaurantRepository().deleteRestaurant(rest.getRestaurantId().toString());
+                restaurants.remove(rest);
+            } else {
+                System.out.println("We are redirecting you to the previous menu");
+            }
+            redirectPause(2);
+            manageRestaurants();
+        }
+    }
+
+    public static void addNewRestaurant() {
+        System.out.println("You chose to add a new restaurant");
+        System.out.println("Please enter the new restaurant's name");
+        Scanner sc = new Scanner(System.in);
+        String name = sc.nextLine();
+        name = name.strip();
+        Address address = Address.addNewAddress();
+        System.out.println("Please enter the phone number: ");
+        String phone = sc.nextLine();
+        phone = phone.strip();
+        Restaurant rest = new Restaurant(name, address, phone, new ArrayList<>());
+        restaurants.add(rest);
+        RestaurantRepository.getRestaurantRepository().insertRestaurant(rest);
+        System.out.println("Succesfully added new restaurant!");
+        redirectPause(2);
     }
 }

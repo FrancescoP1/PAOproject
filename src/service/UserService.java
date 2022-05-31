@@ -90,12 +90,17 @@ public class UserService {
     public static void removeUser(User user) {
         registeredUsers.remove(user);
     }
-    public static void removeUser(String email) {
+    public static User removeUser(String email) {
+        User userToDelete = null;
         for(int i = 0; i < registeredUsers.size(); ++i) {
-            if(registeredUsers.get(i).getEmailAddress().equalsIgnoreCase(email)){
-                registeredUsers.remove(i);
+            //System.out.println(registeredUsers.get(i).getEmailAddress());
+            if(registeredUsers.get(i).getEmailAddress().equals(email)){
+                //System.out.println("yes");
+                userToDelete = registeredUsers.get(i);
                 break;
             }
         }
+        registeredUsers.remove(userToDelete);
+        return userToDelete;
     }
 }

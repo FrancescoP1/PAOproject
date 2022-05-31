@@ -107,7 +107,7 @@ public class DataReader {
                     registeredMenuItems.add(readItem(data, MainCourse.class));
                 }
                 UUID restaurantId = UUID.fromString(data[6]);
-                System.out.println(restaurantId);
+                //System.out.println(restaurantId);
                 //adaugam item-ul, la meniul restaurantului corespunzator.
                 if(registeredMenuItems.size() > 0) {
                     restMap.get(restaurantId).addToMenu(registeredMenuItems.get(registeredMenuItems.size() - 1));

@@ -137,7 +137,8 @@ public class UserRepository {
                 "  PHONE varchar(10) NOT NULL,\n" +
                 "  EMAIL varchar(50) NOT NULL,\n" +
                 "  PASSWORD varchar(40) NOT NULL,\n" +
-                "  ASSIGNED_ORDER varchar(40) DEFAULT NULL\n" +
+                "  ASSIGNED_ORDER varchar(40) DEFAULT NULL,\n" +
+                "  PRIMARY KEY (ID)\n"+
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;";
         Connection con = DatabaseConfiguration.getDatabaseConnection();
         try {
